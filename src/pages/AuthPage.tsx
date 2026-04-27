@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, TrendingUp } from 'lucide-react'
 import { supabase } from '../blink/client'
 import toast from 'react-hot-toast'
@@ -15,6 +15,8 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showVerifyBanner, setShowVerifyBanner] = useState(false)
+  const [verifyEmail, setVerifyEmail] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,6 +28,8 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
         const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
         toast.success('Account created! Welcome to SkillPathly.')
+        setVerifyEmail(email)
+        setShowVerifyBanner(true)
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -68,6 +72,47 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
   }
 
   return (
+    <>
+    <AnimatePresence>
+      {showVerifyBanner && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="w-full max-w-sm bg-card border border-border rounded-2xl p-8 shadow-2xl text-center"
+          >
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+              <Mail size={22} className="text-primary" />
+            </div>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-2">
+              Check your inbox
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+              We've sent a verification link to
+            </p>
+            <p className="text-sm font-medium text-foreground bg-secondary rounded-lg px-3 py-2 mb-5 break-all">
+              {verifyEmail}
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+              Click the link in that email to activate your account, then come back here to sign in.
+            </p>
+            <button
+              onClick={() => setShowVerifyBanner(false)}
+              className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 active:scale-[0.98] transition-all"
+            >
+              Got it
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
     <div className="min-h-screen flex">
       {/* Left panel – branding */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-[hsl(220_30%_8%)] p-12 border-r border-border">
@@ -234,5 +279,6 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
         </motion.div>
       </div>
     </div>
+    </>
   )
 }
