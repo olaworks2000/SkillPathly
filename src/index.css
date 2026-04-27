@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ── SkillPathly Dark Professional Palette ──────────────────────────────── */
+:root {
+  --background: 220 35% 6%;
+  --foreground: 213 20% 90%;
+  --card: 220 30% 9%;
+  --card-foreground: 213 20% 90%;
+  --popover: 220 30% 10%;
+  --popover-foreground: 213 20% 90%;
+  --primary: 142 70% 42%;
+  --primary-foreground: 0 0% 5%;
+  --secondary: 215 25% 15%;
+  --secondary-foreground: 213 15% 75%;
+  --muted: 218 25% 12%;
+  --muted-foreground: 215 15% 50%;
+  --accent: 142 70% 42%;
+  --accent-foreground: 0 0% 5%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 215 20% 14%;
+  --input: 215 20% 14%;
+  --ring: 142 70% 42%;
+
+  --chart-1: 142 70% 42%;
+  --chart-2: 200 80% 50%;
+  --chart-3: 45 90% 55%;
+  --chart-4: 270 60% 60%;
+  --chart-5: 15 80% 55%;
+
+  --sidebar: 220 30% 8%;
+  --sidebar-foreground: 213 20% 85%;
+  --sidebar-primary: 142 70% 42%;
+  --sidebar-primary-foreground: 0 0% 5%;
+  --sidebar-accent: 215 25% 14%;
+  --sidebar-accent-foreground: 213 20% 85%;
+  --sidebar-border: 215 20% 13%;
+  --sidebar-ring: 142 70% 42%;
+
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+
+  --shadow-2xs: 0 1px 3px hsl(0 0% 0% / 0.3);
+  --shadow-xs: 0 2px 6px hsl(0 0% 0% / 0.35);
+  --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.4);
+  --shadow: 0 4px 12px hsl(0 0% 0% / 0.4);
+  --shadow-md: 0 6px 16px hsl(0 0% 0% / 0.45);
+  --shadow-lg: 0 12px 32px hsl(0 0% 0% / 0.5);
+  --shadow-xl: 0 20px 48px hsl(0 0% 0% / 0.55);
+  --shadow-2xl: 0 32px 64px hsl(0 0% 0% / 0.6);
+
+  --tracking-normal: -0.01em;
+  --spacing: 0.25rem;
+  --radius: 0.5rem;
+}
+
+/* Force dark for all blink UI themes since app is always dark */
+:root.dark,
+.theme-linear.dark,
+.theme-glass.dark,
+.theme-midnight.dark,
+.theme-minimal.dark {
+  --background: 220 35% 6%;
+  --foreground: 213 20% 90%;
+  --card: 220 30% 9%;
+  --card-foreground: 213 20% 90%;
+  --popover: 220 30% 10%;
+  --popover-foreground: 213 20% 90%;
+  --primary: 142 70% 42%;
+  --primary-foreground: 0 0% 5%;
+  --secondary: 215 25% 15%;
+  --secondary-foreground: 213 15% 75%;
+  --muted: 218 25% 12%;
+  --muted-foreground: 215 15% 50%;
+  --accent: 142 70% 42%;
+  --accent-foreground: 0 0% 5%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 215 20% 14%;
+  --input: 215 20% 14%;
+  --ring: 142 70% 42%;
+
+  --chart-1: 142 70% 42%;
+  --chart-2: 200 80% 50%;
+  --chart-3: 45 90% 55%;
+  --chart-4: 270 60% 60%;
+  --chart-5: 15 80% 55%;
+
+  --sidebar: 220 30% 8%;
+  --sidebar-foreground: 213 20% 85%;
+  --sidebar-primary: 142 70% 42%;
+  --sidebar-primary-foreground: 0 0% 5%;
+  --sidebar-accent: 215 25% 14%;
+  --sidebar-accent-foreground: 213 20% 85%;
+  --sidebar-border: 215 20% 13%;
+  --sidebar-ring: 142 70% 42%;
+}
+
+/* ── Utility classes ──────────────────────────────────────────────────── */
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, hsl(142 70% 50%), hsl(160 70% 45%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.green-glow {
+  box-shadow: 0 0 30px hsl(142 70% 42% / 0.15), 0 0 60px hsl(142 70% 42% / 0.08);
+}
+
+.card-hover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  border-color: hsl(142 70% 42% / 0.4);
+  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.4), 0 0 0 1px hsl(142 70% 42% / 0.15);
+  transform: translateY(-2px);
+}
+
+.skill-bar-transition {
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 hsl(142 70% 42% / 0.4); }
+  70% { box-shadow: 0 0 0 12px hsl(142 70% 42% / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(142 70% 42% / 0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out both;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+}
+
+.animate-progress-fill {
+  animation: progressFill 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(220 35% 6%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(215 20% 18%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(215 20% 25%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
