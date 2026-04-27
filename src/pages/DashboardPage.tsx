@@ -124,7 +124,7 @@ function PersonalizedHeadline({ matchCount, total, role, topSkill, topGap }: {
   const tier = pct >= 70 ? 'strong' : pct >= 40 ? 'developing' : 'early'
 
   const tierMsg = {
-    strong: `You're well positioned for ${role} roles — strong market alignment.`,
+    strong: `You're well positioned for ${role} roles, with strong market alignment.`,
     developing: `You have a solid foundation for ${role} roles. A few key gaps remain.`,
     early: `You're building toward ${role} roles. Focus on the gaps below to accelerate.`,
   }[tier]
@@ -430,7 +430,7 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                 </div>
                 <p className="font-medium text-foreground">You have all the top skills!</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Great work — you match all key requirements for {profile.targetRole}.
+                  Great work. You match all key requirements for {profile.targetRole}.
                 </p>
               </div>
             ) : (

@@ -64,7 +64,7 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageP
             Build the projects that prove it.
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-            SkillPathly analyses your background against real job market data and delivers a personalised skill gap report with project and certification roadmaps — in minutes.
+            SkillPathly analyses your background against real job market data and delivers a personalised skill gap report with project and certification roadmaps, all in minutes.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
