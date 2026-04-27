@@ -5,7 +5,6 @@ interface LandingPageProps {
   ctaLabel: string
   onCTA: () => void
   onSignOut?: () => void
-  onPrivacy?: () => void
 }
 
 const fadeUp = {
@@ -18,7 +17,7 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.1 } },
 }
 
-export default function LandingPage({ ctaLabel, onCTA, onSignOut, onPrivacy }: LandingPageProps) {
+export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
@@ -273,11 +272,9 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onPrivacy }: L
             <p className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} SkillPathly. Career intelligence for the next generation.
             </p>
-            {onPrivacy && (
-              <button onClick={onPrivacy} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                Privacy Policy
-              </button>
-            )}
+            <a href="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              Privacy Policy
+            </a>
           </div>
         </div>
       </footer>

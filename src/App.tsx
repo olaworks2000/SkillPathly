@@ -173,8 +173,6 @@ export default function App() {
     navigate(isAdmin ? 'admin-home' : 'dashboard')
   }, [isAdmin, navigate])
 
-  const handleGoToPrivacy = useCallback(() => navigate('privacy'), [navigate])
-
   const handleSignOut = useCallback(() => {
     void supabase.auth.signOut()
   }, [])
@@ -194,7 +192,6 @@ export default function App() {
           ctaLabel={ctaLabel}
           onCTA={handleCTA}
           onSignOut={isAuthenticated ? handleSignOut : undefined}
-          onPrivacy={handleGoToPrivacy}
         />
         <Toaster position="top-right" toastOptions={TOAST_OPTS} />
       </>
