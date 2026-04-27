@@ -5,6 +5,7 @@ interface LandingPageProps {
   ctaLabel: string
   onCTA: () => void
   onSignOut?: () => void
+  onGoToAdminHome?: () => void
 }
 
 const fadeUp = {
@@ -17,7 +18,7 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.1 } },
 }
 
-export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageProps) {
+export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHome }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
@@ -35,6 +36,14 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageP
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Sign out
+            </button>
+          )}
+          {onGoToAdminHome && (
+            <button
+              onClick={onGoToAdminHome}
+              className="px-4 py-2 rounded-lg border border-border bg-transparent text-foreground text-sm font-semibold hover:bg-secondary active:scale-[0.98] transition-all"
+            >
+              Admin Home
             </button>
           )}
           <button

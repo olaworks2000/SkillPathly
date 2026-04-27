@@ -192,6 +192,7 @@ export default function App() {
           ctaLabel={ctaLabel}
           onCTA={handleCTA}
           onSignOut={isAuthenticated ? handleSignOut : undefined}
+          onGoToAdminHome={isAdmin ? () => navigate('admin-home') : undefined}
         />
         <Toaster position="top-right" toastOptions={TOAST_OPTS} />
       </>
