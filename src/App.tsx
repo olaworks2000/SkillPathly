@@ -118,7 +118,7 @@ export default function App() {
       if (user) {
         createProfile(user.id).then(() => {
           creatingProfile.current = false
-          if (view === 'auth') setView('onboarding')
+          if (view === 'auth') setView(isAdmin ? 'admin-home' : 'onboarding')
         })
       }
       return
