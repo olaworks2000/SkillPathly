@@ -44,7 +44,9 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
     setError('')
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } })
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      const redirectTo = isLocal ? window.location.origin : 'https://www.skillpathly.com'
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } })
       if (error) throw error
       // onAuthStateChange in useAuth will pick up the session after redirect
     } catch (err: unknown) {

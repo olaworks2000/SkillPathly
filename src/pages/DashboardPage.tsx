@@ -5,7 +5,7 @@ import {
 } from 'recharts'
 import {
   TrendingUp, Award, Target, ChevronDown, ChevronUp,
-  ExternalLink, RefreshCw, LogOut, Star, BarChart2,
+  ExternalLink, RefreshCw, LogOut, Star, BarChart2, Trash2,
 } from 'lucide-react'
 import type { UserProfile, ProjectRec, CertRec, SkillDemand } from '../types'
 import { computeDashboard } from '../lib/dashboard'
@@ -170,6 +170,8 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
     [profile, liveDemand],
   )
   const [expandedSkills, setExpandedSkills] = useState<Set<string>>(new Set())
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const toggleSkill = (skill: string) => {
     setExpandedSkills(prev => {
@@ -182,6 +184,17 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+  }
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true)
+    try {
+      await supabase.from('user_profiles').delete().eq('id', profile.id)
+      await supabase.functions.invoke('delete-user')
+      await supabase.auth.signOut()
+    } finally {
+      setDeleting(false)
+    }
   }
 
   const chartData = dashboard.marketDemand.map(d => ({
@@ -245,8 +258,57 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
           >
             <LogOut size={12} /> Sign out
           </button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-destructive/70 hover:text-destructive hover:bg-destructive/10 transition-all border border-border"
+          >
+            <Trash2 size={12} /> Delete account
+          </button>
         </div>
       </header>
+
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-sm bg-card border border-border rounded-2xl p-6 shadow-2xl"
+            >
+              <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
+                <Trash2 size={18} className="text-destructive" />
+              </div>
+              <h2 className="font-display font-semibold text-foreground mb-2">Delete your account?</h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                This will permanently delete your account and all associated data. This action cannot be undone.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleting}
+                  className="flex-1 py-2 rounded-lg border border-border text-sm text-foreground hover:bg-secondary transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={deleting}
+                  className="flex-1 py-2 rounded-lg bg-destructive text-white text-sm font-semibold hover:bg-destructive/90 transition-colors disabled:opacity-50"
+                >
+                  {deleting ? 'Deleting…' : 'Yes, delete'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <motion.div

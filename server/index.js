@@ -14,11 +14,21 @@ const app = express()
 const port = process.env.PORT || 4000
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://skillpathly.vercel.app'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://skillpathly.vercel.app',
+    'https://skillpathly.com',
+    'https://www.skillpathly.com',
+  ],
 }))
 app.use(express.json())
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' })
+})
 
 app.post('/api/analyse', async (req, res) => {
   const { role, country = 'gb' } = req.body
