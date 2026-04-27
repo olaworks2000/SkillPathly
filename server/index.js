@@ -3,6 +3,13 @@ import cors from 'cors'
 import Anthropic from '@anthropic-ai/sdk'
 import 'dotenv/config'
 
+process.on('unhandledRejection', (reason) => {
+  console.error('[SkillPathly] Unhandled rejection:', reason)
+})
+process.on('uncaughtException', (err) => {
+  console.error('[SkillPathly] Uncaught exception:', err)
+})
+
 const app = express()
 const port = process.env.PORT || 4000
 
@@ -59,9 +66,17 @@ ${descriptions.map((d, i) => `[${i + 1}] ${d.slice(0, 400)}`).join('\n\n')}`
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
     })
-    const text = message.content.find(b => b.type === 'text')?.text ?? ''
-    skills = JSON.parse(text)
+    const text = (message.content.find(b => b.type === 'text')?.text ?? '')
+      .replace(/^```(?:json)?\n?/, '')
+      .replace(/\n?```$/, '')
+    const parsed = JSON.parse(text)
+    if (!Array.isArray(parsed)) throw new Error('Claude response is not an array')
+    skills = parsed.filter(
+      e => typeof e?.skill === 'string' && typeof e?.demand === 'number'
+    )
+    if (skills.length === 0) throw new Error('Claude returned no valid skill entries')
   } catch (err) {
+    console.error('[SkillPathly] Claude analysis error:', err)
     return res.status(500).json({ error: 'Claude analysis failed', detail: err.message })
   }
 

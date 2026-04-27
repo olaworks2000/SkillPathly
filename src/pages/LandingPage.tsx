@@ -96,7 +96,7 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageP
               {/* Mock skill bars */}
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Market Demand — Data Analyst</p>
+                  <p className="text-sm font-semibold text-foreground">Market Demand: Data Analyst</p>
                   <p className="text-xs text-muted-foreground">You match 4 of the top 10 required skills</p>
                 </div>
                 <div className="text-2xl font-display font-bold text-primary">40%</div>

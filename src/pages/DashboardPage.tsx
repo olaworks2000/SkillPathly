@@ -148,14 +148,21 @@ function PersonalizedHeadline({ matchCount, total, role, topSkill, topGap }: {
 export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsights, onGoToAdminHome, onGoHome }: DashboardPageProps) {
   const [liveDemand, setLiveDemand] = useState<SkillDemand[] | null>(null)
   const [analysing, setAnalysing] = useState(!!profile.targetRole)
+  const [slowLoad, setSlowLoad] = useState(false)
 
   useEffect(() => {
     if (!profile.targetRole) return
     setAnalysing(true)
+    setSlowLoad(false)
+    const slowTimer = setTimeout(() => setSlowLoad(true), 10000)
     analyseRole(profile.targetRole)
       .then(setLiveDemand)
       .catch(() => { /* silently fall back to seed data */ })
-      .finally(() => setAnalysing(false))
+      .finally(() => {
+        clearTimeout(slowTimer)
+        setAnalysing(false)
+      })
+    return () => clearTimeout(slowTimer)
   }, [profile.targetRole])
 
   const dashboard = useMemo(
@@ -341,6 +348,11 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground">Analysing job listings…</p>
+                  {slowLoad && (
+                    <p className="text-xs text-muted-foreground/60 max-w-[220px] text-center">
+                      Taking longer than usual. The server is starting up, this should resolve in a few seconds.
+                    </p>
+                  )}
                 </div>
               </div>
             ) : (
