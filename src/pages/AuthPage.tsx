@@ -44,7 +44,7 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
     setError('')
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' })
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } })
       if (error) throw error
       // onAuthStateChange in useAuth will pick up the session after redirect
     } catch (err: unknown) {
@@ -176,7 +176,7 @@ export default function AuthPage({ onSuccess }: AuthPageProps) {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  placeholder="you@university.ac.uk"
+                  placeholder="you@example.com"
                   className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-card border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                 />
               </div>

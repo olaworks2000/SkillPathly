@@ -10,8 +10,9 @@ import OnboardingPage from './pages/OnboardingPage'
 import DashboardPage from './pages/DashboardPage'
 import InsightsPage from './pages/InsightsPage'
 import AdminHomePage from './pages/AdminHomePage'
+import PrivacyPage from './pages/PrivacyPage'
 
-type AppView = 'landing' | 'auth' | 'onboarding' | 'dashboard' | 'insights' | 'admin-home'
+type AppView = 'landing' | 'auth' | 'onboarding' | 'dashboard' | 'insights' | 'admin-home' | 'privacy'
 
 const TOAST_OPTS = {
   style: {
@@ -46,7 +47,9 @@ function LoadingScreen() {
 export default function App() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth()
   const { profile, loading: profileLoading, fetchProfile, createProfile, updateProfile } = useProfile()
-  const [view, setView] = useState<AppView>('landing')
+  const [view, setView] = useState<AppView>(() =>
+    window.location.pathname === '/privacy' ? 'privacy' : 'landing'
+  )
   const [profileFetched, setProfileFetched] = useState(false)
   const creatingProfile = useRef(false)
 
@@ -58,11 +61,13 @@ export default function App() {
   // history entry so popstate fires when the user presses the back button.
   // Programmatic routing (auth effects, guards) uses setView directly so
   // those transitions are NOT reversible with the back button.
-  const viewHistoryStack = useRef<AppView[]>(['landing'])
+  const viewHistoryStack = useRef<AppView[]>([
+    window.location.pathname === '/privacy' ? 'privacy' : 'landing'
+  ])
 
   const navigate = useCallback((newView: AppView) => {
     viewHistoryStack.current.push(newView)
-    window.history.pushState(null, '')
+    window.history.pushState(null, '', newView === 'privacy' ? '/privacy' : '/')
     setView(newView)
   }, [])
 
@@ -100,7 +105,7 @@ export default function App() {
     if (authLoading) return
 
     if (!isAuthenticated) {
-      if (view !== 'auth' && view !== 'landing') {
+      if (view !== 'auth' && view !== 'landing' && view !== 'privacy') {
         setView('landing')
       }
       return
@@ -168,6 +173,8 @@ export default function App() {
     navigate(isAdmin ? 'admin-home' : 'dashboard')
   }, [isAdmin, navigate])
 
+  const handleGoToPrivacy = useCallback(() => navigate('privacy'), [navigate])
+
   const handleSignOut = useCallback(() => {
     void supabase.auth.signOut()
   }, [])
@@ -187,7 +194,17 @@ export default function App() {
           ctaLabel={ctaLabel}
           onCTA={handleCTA}
           onSignOut={isAuthenticated ? handleSignOut : undefined}
+          onPrivacy={handleGoToPrivacy}
         />
+        <Toaster position="top-right" toastOptions={TOAST_OPTS} />
+      </>
+    )
+  }
+
+  if (view === 'privacy') {
+    return (
+      <>
+        <PrivacyPage onGoHome={() => navigate('landing')} />
         <Toaster position="top-right" toastOptions={TOAST_OPTS} />
       </>
     )

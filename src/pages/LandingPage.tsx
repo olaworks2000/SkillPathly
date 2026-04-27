@@ -5,6 +5,7 @@ interface LandingPageProps {
   ctaLabel: string
   onCTA: () => void
   onSignOut?: () => void
+  onPrivacy?: () => void
 }
 
 const fadeUp = {
@@ -17,7 +18,7 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.1 } },
 }
 
-export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageProps) {
+export default function LandingPage({ ctaLabel, onCTA, onSignOut, onPrivacy }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
@@ -268,9 +269,16 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut }: LandingPageP
             </div>
             <span className="font-display text-sm font-semibold text-foreground">SkillPathly</span>
           </div>
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} SkillPathly. Career intelligence for the next generation.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-muted-foreground">
+              © {new Date().getFullYear()} SkillPathly. Career intelligence for the next generation.
+            </p>
+            {onPrivacy && (
+              <button onClick={onPrivacy} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                Privacy Policy
+              </button>
+            )}
+          </div>
         </div>
       </footer>
     </div>
