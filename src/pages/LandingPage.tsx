@@ -65,15 +65,14 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
         <motion.div {...fadeUp} className="relative">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-xs font-mono mb-6">
             <Zap size={10} />
-            Career Intelligence Platform
+            Readiness Verdict Platform
           </div>
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-foreground leading-[1.05] tracking-tight mb-6">
-            Know exactly which skills{' '}
-            <span className="text-gradient-green">employers want.</span>{' '}
-            Build the projects that prove it.
+            Find out if you're actually{' '}
+            <span className="text-gradient-green">ready to get hired.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-            SkillPathly analyses your background against real job market data and delivers a personalised skill gap report with project and certification roadmaps, all in minutes.
+            SkillPathly compares your background against real job listings and gives you a verdict — not a to-do list. Most graduates apply too early or too late. We analyse your modules, skills, and projects against live market data, then tell you exactly where you stand and what to build to close the gap — before your first application.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
@@ -151,7 +150,7 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
           <motion.div variants={fadeUp} className="text-center mb-16">
             <span className="text-xs font-mono text-primary uppercase tracking-widest">How it works</span>
             <h2 className="font-display text-4xl font-bold text-foreground mt-3">
-              From background to roadmap{' '}
+              From background to verdict{' '}
               <span className="text-muted-foreground">in 3 steps</span>
             </h2>
           </motion.div>
@@ -173,8 +172,8 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
               {
                 step: '03',
                 icon: <Map size={20} />,
-                title: 'Get your skill gap + roadmap',
-                desc: 'Receive a prioritised list of missing skills with project ideas and certifications tailored to your target role.',
+                title: 'Get your readiness verdict',
+                desc: 'See exactly where you stand, which skills employers need that you\'re missing, and which projects to build to close the gap — before you apply.',
               },
             ].map((item, i) => (
               <motion.div
@@ -212,19 +211,17 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
         >
           <motion.div variants={fadeUp} className="text-center mb-16">
             <h2 className="font-display text-4xl font-bold text-foreground">
-              Everything you need to{' '}
-              <span className="text-gradient-green">close the gap</span>
+              Built around the questions{' '}
+              <span className="text-gradient-green">candidates actually ask</span>
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              'Real job market demand data by role',
-              'Automated skill inference from your modules',
-              'Personalised project recommendations per skill gap',
-              'Curated certification roadmap',
-              'Career intent profiling',
-              'Mobile-friendly dashboard',
+              'We cut through the noise. Here\'s what employers actually want for your target role.',
+              'Readiness isn\'t about certificates. It\'s about the right skills and proof you can use them.',
+              'We recommend projects you can actually build and reference in interviews.',
+              'See how you compare to people who studied this — and what it actually takes to compete.',
             ].map((feat, i) => (
               <motion.div
                 key={feat}
@@ -253,10 +250,10 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           </div>
           <h2 className="font-display text-4xl font-bold text-foreground mb-4">
-            Ready to close your skill gaps?
+            Ready to find out where you actually stand?
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-8">
-            Join thousands of students and graduates getting ahead with data-driven career insights.
+            Get your readiness verdict in minutes. No guesswork, no generic advice — just a clear picture of where you stand.
           </p>
           <button
             onClick={onCTA}

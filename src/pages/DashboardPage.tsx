@@ -156,9 +156,9 @@ function PersonalizedHeadline({ matchCount, total, role, topSkill, topGap }: {
   const tier = pct >= 70 ? 'strong' : pct >= 40 ? 'developing' : 'early'
 
   const tierMsg = {
-    strong: `You're well positioned for ${role} roles, with strong market alignment.`,
-    developing: `You have a solid foundation for ${role} roles. A few key gaps remain.`,
-    early: `You're building toward ${role} roles. Focus on the gaps below to accelerate.`,
+    strong: `You're job-ready for ${role} roles. Your profile matches what employers are actively hiring for.`,
+    developing: `You're close to job-ready for ${role} roles. A few targeted gaps remain — close them and you're in strong shape to apply.`,
+    early: `You're building toward ${role} roles. Your foundation is there — focus on the priority gaps below and you'll be application-ready faster than you think.`,
   }[tier]
 
   return (
@@ -353,7 +353,7 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
           <motion.div variants={itemVariants}>
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-1">Results Dashboard</p>
             <h1 className="font-display text-3xl font-bold text-foreground">
-              Your skill gap analysis
+              Your readiness verdict
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
               Based on job market demand for <span className="text-foreground font-medium">{profile.targetRole}</span> roles
@@ -388,7 +388,7 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                 <Target size={18} className="text-destructive" />
               </div>
               <p className="font-display text-3xl font-bold text-foreground">{dashboard.missingSkills.length}</p>
-              <p className="text-sm text-muted-foreground mt-1">Skill gaps identified</p>
+              <p className="text-sm text-muted-foreground mt-1">Gaps to close</p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {dashboard.missingSkills[0]
                   ? `Highest priority: ${dashboard.missingSkills[0].skill}`
@@ -450,12 +450,12 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                 </div>
               </div>
             ) : (
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={chartData} layout="horizontal" margin={{ left: 0, right: 0, top: 0, bottom: 80 }}>
-                <XAxis dataKey="skill" type="category" interval={0} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'hsl(215 15% 65%)', angle: -35, textAnchor: 'end' }} />
-                <YAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(215 15% 45%)' }} tickFormatter={v => `${v}%`} axisLine={false} tickLine={false} />
+            <ResponsiveContainer width="100%" height={Math.max(300, chartData.length * 44)}>
+              <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 30, top: 0, bottom: 0 }}>
+                <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(215 15% 45%)' }} tickFormatter={v => `${v}%`} axisLine={false} tickLine={false} />
+                <YAxis type="category" dataKey="skill" width={180} tick={{ fontSize: 12, fill: 'hsl(215 15% 65%)' }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(215 25% 12%)' }} />
-                <Bar dataKey="demand" radius={[4, 4, 0, 0]} maxBarSize={40}>
+                <Bar dataKey="demand" radius={[0, 4, 4, 0]} maxBarSize={20}>
                   {chartData.map((entry, i) => (
                     <Cell key={i} fill={entry.has ? 'hsl(142 70% 42%)' : 'hsl(0 70% 55% / 0.55)'} />
                   ))}
@@ -510,7 +510,7 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
             {certs.length > 0 && (
               <motion.div variants={itemVariants} className="p-6 rounded-2xl bg-card border border-border">
                 <h2 className="font-display font-semibold text-foreground mb-1">Certifications</h2>
-                <p className="text-xs text-muted-foreground mb-4">Recommended certifications for your skill gaps</p>
+                <p className="text-xs text-muted-foreground mb-4">Certifications that close your biggest gaps</p>
                 <div className="space-y-2">
                   {certs.map(cert => (
                     <CertCard key={cert.id} cert={cert} />
@@ -525,7 +525,7 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
             <div className="mb-6">
               <h2 className="font-display font-semibold text-foreground">Skill Gaps & Project Recommendations</h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Missing skills ranked by employer demand, with project ideas to fill each gap
+                Skills employers want that your profile doesn't show yet — with projects to prove each one
               </p>
             </div>
 
