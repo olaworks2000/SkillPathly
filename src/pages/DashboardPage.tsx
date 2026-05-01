@@ -450,12 +450,12 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                 </div>
               </div>
             ) : (
-            <ResponsiveContainer width="100%" height={Math.max(320, chartData.length * 36)}>
-              <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 30, top: 0, bottom: 8 }}>
-                <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(215 15% 45%)' }} tickFormatter={v => `${v}%`} axisLine={false} tickLine={false} />
-                <YAxis type="category" dataKey="skill" width={160} tick={<CustomYAxisTick />} axisLine={false} tickLine={false} />
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={chartData} layout="horizontal" margin={{ left: 0, right: 0, top: 0, bottom: 80 }}>
+                <XAxis dataKey="skill" type="category" interval={0} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'hsl(215 15% 65%)', angle: -35, textAnchor: 'end' }} />
+                <YAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(215 15% 45%)' }} tickFormatter={v => `${v}%`} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(215 25% 12%)' }} />
-                <Bar dataKey="demand" radius={[0, 4, 4, 0]} maxBarSize={20}>
+                <Bar dataKey="demand" radius={[4, 4, 0, 0]} maxBarSize={40}>
                   {chartData.map((entry, i) => (
                     <Cell key={i} fill={entry.has ? 'hsl(142 70% 42%)' : 'hsl(0 70% 55% / 0.55)'} />
                   ))}
