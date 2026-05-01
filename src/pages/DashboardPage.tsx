@@ -102,6 +102,38 @@ function CertCard({ cert }: { cert: CertRec }) {
   )
 }
 
+function CustomYAxisTick({ x, y, payload }: { x?: number; y?: number; payload?: { value: string } }) {
+  const label = payload?.value ?? ''
+  const words = label.split(' ')
+  const lineHeight = 14
+
+  if (words.length === 1 || label.length <= 16) {
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={-4} dy="0.35em" textAnchor="end" fill="hsl(215 15% 65%)" fontSize={12}>
+          {label}
+        </text>
+      </g>
+    )
+  }
+
+  const mid = Math.ceil(words.length / 2)
+  const lines = [words.slice(0, mid).join(' '), words.slice(mid).join(' ')]
+  const totalHeight = lines.length * lineHeight
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text textAnchor="end" fill="hsl(215 15% 65%)" fontSize={12}>
+        {lines.map((line, i) => (
+          <tspan key={i} x={-4} dy={i === 0 ? -(totalHeight - lineHeight) / 2 : lineHeight}>
+            {line}
+          </tspan>
+        ))}
+      </text>
+    </g>
+  )
+}
+
 function CustomTooltip({ active, payload, label }: {
   active?: boolean
   payload?: Array<{ value: number; payload?: { has: boolean } }>
@@ -418,12 +450,12 @@ export default function DashboardPage({ profile, onRetake, isAdmin, onGoToInsigh
                 </div>
               </div>
             ) : (
-            <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 30, top: 0, bottom: 0 }}>
+            <ResponsiveContainer width="100%" height={Math.max(320, chartData.length * 36)}>
+              <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 30, top: 0, bottom: 8 }}>
                 <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(215 15% 45%)' }} tickFormatter={v => `${v}%`} axisLine={false} tickLine={false} />
-                <YAxis type="category" dataKey="skill" width={110} tick={{ fontSize: 12, fill: 'hsl(215 15% 65%)' }} axisLine={false} tickLine={false} />
+                <YAxis type="category" dataKey="skill" width={160} tick={<CustomYAxisTick />} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(215 25% 12%)' }} />
-                <Bar dataKey="demand" radius={[0, 4, 4, 0]} maxBarSize={16}>
+                <Bar dataKey="demand" radius={[0, 4, 4, 0]} maxBarSize={20}>
                   {chartData.map((entry, i) => (
                     <Cell key={i} fill={entry.has ? 'hsl(142 70% 42%)' : 'hsl(0 70% 55% / 0.55)'} />
                   ))}
