@@ -6,7 +6,7 @@ import {
 } from 'recharts'
 import {
   TrendingUp, Users, CheckCircle2, BarChart2, Zap, LogOut, ArrowLeft,
-  Search, X, ChevronDown, ChevronUp,
+  Search, X, ChevronDown, ChevronUp, RefreshCw,
 } from 'lucide-react'
 import { supabase } from '../blink/client'
 import type { CareerIntent } from '../types'
@@ -225,6 +225,8 @@ export default function InsightsPage({ onBack, onGoHome }: InsightsPageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const [refreshTick, setRefreshTick] = useState(0)
+
   // Filter state
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
@@ -240,23 +242,25 @@ export default function InsightsPage({ onBack, onGoHome }: InsightsPageProps) {
   useEffect(() => {
     const load = async () => {
       try {
-        // stub — replace with real Supabase queries after tables are configured:
-        // const { data: profiles } = await supabase.from('userProfiles').select('*').limit(1000)
-        // const { data: users } = await supabase.from('users').select('id, email').limit(1000)
-        void supabase
-        const profiles: RawProfile[] = []
-        const users: RawUser[] = []
-        setRawProfiles(profiles)
-        setRawUsers(users)
+        const { data: profiles, error: profilesError } = await supabase.from('userProfiles').select('*').limit(1000)
+        if (profilesError) throw profilesError
+
+        const { data: users, error: usersError } = await supabase.rpc('get_user_emails')
+        if (usersError) {
+          console.warn('[InsightsPage] get_user_emails RPC unavailable — table will show user IDs. Run supabase/migrations/get_user_emails.sql to fix.')
+        }
+
+        setRawProfiles((profiles as RawProfile[]) ?? [])
+        setRawUsers((users as RawUser[] | null) ?? [])
       } catch (err) {
         console.error(err)
-        setError('Failed to load insights data.')
+        setError('Failed to load insights data. Check Supabase RLS policies for admin access.')
       } finally {
         setLoading(false)
       }
     }
     load()
-  }, [])
+  }, [refreshTick])
 
   const insights = useMemo(() => aggregate(rawProfiles), [rawProfiles])
   const allUserRows = useMemo(() => buildUserRows(rawProfiles, rawUsers), [rawProfiles, rawUsers])
@@ -362,6 +366,11 @@ export default function InsightsPage({ onBack, onGoHome }: InsightsPageProps) {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => { setLoading(true); setError(null); setRefreshTick(t => t + 1) }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all border border-border">
+            <RefreshCw size={12} /> Refresh
+          </button>
           <button onClick={onBack}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all border border-border">
             <ArrowLeft size={12} /> Back

@@ -30,6 +30,16 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       { auth: { autoRefreshToken: false, persistSession: false } }
     )
+
+    // Clean up profile row first — non-fatal if it fails
+    const { error: profileDeleteError } = await adminClient
+      .from('userProfiles')
+      .delete()
+      .eq('userId', user.id)
+    if (profileDeleteError) {
+      console.warn(`[delete-user] userProfiles cleanup warning for ${user.id}:`, profileDeleteError.message)
+    }
+
     const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id)
     if (deleteError) throw deleteError
 
@@ -37,6 +47,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (err) {
+    console.error('[delete-user]', err)
     return new Response(
       JSON.stringify({ error: err instanceof Error ? err.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
