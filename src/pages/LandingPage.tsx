@@ -68,11 +68,11 @@ export default function LandingPage({ ctaLabel, onCTA, onSignOut, onGoToAdminHom
             Readiness Verdict Platform
           </div>
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-foreground leading-[1.05] tracking-tight mb-6">
-            Find out if you're actually{' '}
-            <span className="text-gradient-green">ready to get hired.</span>
+            Discover the skills you didn't know{' '}
+            <span className="text-gradient-green">you were missing.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-            SkillPathly compares your background against real job listings and gives you a verdict — not a to-do list. Most graduates apply too early or too late. We analyse your modules, skills, and projects against live market data, then tell you exactly where you stand and what to build to close the gap — before your first application.
+            Real job data. Real gaps. SkillPathly analyzes your profile against live market listings and gives you a clear verdict — what you have, what you're missing, and what to build next.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
